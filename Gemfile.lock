@@ -1,0 +1,14 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    eventmachine (0.12.10)
+    eventmachine_httpserver (0.2.1)
+    http_parser.rb (0.5.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  eventmachine
+  eventmachine_httpserver
+  http_parser.rb
