@@ -5,6 +5,18 @@ require 'eventmachine'
 require 'evma_httpserver'
 require 'http/parser'
 require 'optparse'
+require 'logger'
+
+port = 8080
+optparse = OptionParser.new do |opts|
+  opts.on("-p", "--port PORT", Integer, "Port to listen") do |p|
+    port = p
+  end
+end
+optparse.parse!
+
+ServLogger = Logger.new(STDOUT)
+ServLogger.level = Logger.const_get("INFO")
 
 class HttpServ < EM::Connection
   include EM::HttpServer
@@ -14,7 +26,7 @@ class HttpServ < EM::Connection
     @parser = Http::Parser.new
     @body = ''
     @parser.on_headers_complete = proc do
-      log_time("Parse time")
+      log_time("=> Parse time")
     end
     @parser.on_body = proc do |chunk|
       @body << chunk
@@ -49,28 +61,20 @@ class HttpServ < EM::Connection
     content << "</body></html>"
     response.content = content
     response.send_response
-    log_time("Response time")
+    log_time("<= Response time")
   end
 
   private
 
   def log_time(message)
     time = (Time.now - @start_time)*1000
-    puts "#{@parser.http_method} #{@parser.request_url}. #{message}: #{time}ms"
+    ServLogger.info "#{@parser.http_method} #{@parser.request_url} #{message}: #{time}ms"
   end
 end
-
-port = 8080
-optparse = OptionParser.new do |opts|
-  opts.on("-p", "--port PORT", Integer, "Port to listen") do |p|
-    port = p
-  end
-end
-optparse.parse!
 
 EM.run do
   Signal.trap("INT")  { EM.stop }
   Signal.trap("TERM") { EM.stop }
   EM.start_server '0.0.0.0', port, HttpServ
-  puts "Listening on port #{port}"
+  ServLogger.info "Listening on port #{port}"
 end
