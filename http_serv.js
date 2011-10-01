@@ -3,7 +3,7 @@ http.createServer(function (request, response) {
     response.statusCode = 200;
     response.setHeader("Content-Type", "text/html");
     var content = '';
-    content += '<html><body><h1>';
+    content += '<html><body>';
     content += '<p>HTTP_VERSION: '+request.httpVersionMajor+'.'+request.httpVersionMinor+'</p>';
     content += '<p>HTTP_METHOD: '+request.method+'</p>';
     content += '<p>REQUEST_URL: '+request.url+'</p>';
