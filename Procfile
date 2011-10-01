@@ -1,1 +1,1 @@
-web: ruby http_serv.rb -p $PORT
+web: ruby http_serv_full.rb -p $PORT
