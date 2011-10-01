@@ -10,7 +10,7 @@ http.createServer(function (request, response) {
     content += '<p>HEADERS:</p>';
     content += '<ul>';
     for (var header in request.headers) {
-      content += '<li>'+header+': '+request.headers[header]+'</li>'
+        content += '<li>'+header+': '+request.headers[header]+'</li>'
     }
     content += '</ul>';
     content += '</body></html>\r\n';
